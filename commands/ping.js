@@ -7,6 +7,10 @@ class PingCommand extends Command {
         });
     }
 
+    userPermissions(message) {
+        return message.member.roles.exists(role => role.name === 'sudo');
+    }
+
     exec(message) {
         return message.reply('Pong!').then(sent => {
             const timeDiff = (sent.editedAt || sent.createdAt) - (message.editedAt || message.createdAt);
