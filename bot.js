@@ -16,7 +16,7 @@ client.login(secret.trim());
 
 client.on("ready", () => {
 	console.log("My Owner Is:" + client.ownerID);
-	
+
     client.user.setPresence({
         game: { 
             name: 'DevOps',
@@ -27,5 +27,6 @@ client.on("ready", () => {
 
 	client.users.get(client.ownerID).send("Operations Robot is online.");
 });
+
 
 
