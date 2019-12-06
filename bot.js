@@ -44,13 +44,14 @@ client.on("ready", () => {
 // End Akairo Client Init
 
 // Redis Init
-var redis = require("redis");
+/*var redis = require("redis");
 var subscriber = redis.createClient();
 subscriber.on("message", function (channel, message) {
 	default_channel.send(message);
 });
-subscriber.subscribe("operations-robot-msgs");
+subscriber.subscribe("operations-robot-msgs");*/
 // End Redis Init
+
 
 // UptimeRobot Init
 function UptimeRobot() {
