@@ -1,11 +1,16 @@
 var fs = require('fs');
 
 // begin configuration
-var default_channel = '';
-var default_channel_id = fs.readFileSync('/opt/secrets/operations-robot-channel', 'utf8').trim();
-var secret = fs.readFileSync('/opt/secrets/operations-robot', 'utf8').trim();
-var owner = fs.readFileSync('/opt/secrets/operations-robot-owner', 'utf8').trim();
+const default_channel_id = fs.readFileSync('/opt/secrets/operations-robot-channel', 'utf8').trim();
+const secret = fs.readFileSync('/opt/secrets/operations-robot', 'utf8').trim();
+const owner = fs.readFileSync('/opt/secrets/operations-robot-owner', 'utf8').trim();
+const uptimerobotkey = fs.readFileSync('/opt/secrets/uptimerobot', 'utf8').trim();
 // end configuration
+
+// Var Init
+var default_channel = ''; // leave empty
+const axios = require('axios');
+// End Var Init
 
 // Akairo Client Init
 const { AkairoClient } = require('discord-akairo');
@@ -46,3 +51,32 @@ subscriber.on("message", function (channel, message) {
 });
 subscriber.subscribe("operations-robot-msgs");
 // End Redis Init
+
+// UptimeRobot Init
+function UptimeRobot() {
+    if(uptimerobotkey == '') // not initalized
+        return;
+
+    axios.post('https://api.uptimerobot.com/v2/getMonitors', {
+        format: 'json',
+        api_key: uptimerobotkey
+    })
+    .then((res) => {
+        //console.log(`statusCode: ${res.statusCode}`)
+        //console.log(res.data.monitors)
+        res.data.monitors.forEach(monitor => {
+            //console.log(monitor.friendly_name+" "+monitor.status);
+            if(monitor.status>2) {
+                default_channel.send(monitor.friendly_name+" is offline per UptimeRobot.");
+            }
+        });
+    })
+    .catch((error) => {
+        console.error(error);
+        default_channel.send("UptimeRobot - Error Fetching Service Status.");
+    })
+
+    setInterval(UptimeRobot, 180000);
+}
+setInterval(UptimeRobot, 180000);
+// End UptimeRobot Init
