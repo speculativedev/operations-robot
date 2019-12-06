@@ -44,17 +44,17 @@ client.on("ready", () => {
 // End Akairo Client Init
 
 // Redis Init
-/*var redis = require("redis");
+var redis = require("redis");
 var subscriber = redis.createClient();
 subscriber.on("message", function (channel, message) {
 	default_channel.send(message);
 });
-subscriber.subscribe("operations-robot-msgs");*/
+subscriber.subscribe("operations-robot-msgs");
 // End Redis Init
 
 
 // UptimeRobot Init
-function UptimeRobot() {
+/*function UptimeRobot() {
     if(uptimerobotkey == '') // not initalized
         return;
 
@@ -77,7 +77,7 @@ function UptimeRobot() {
         default_channel.send("UptimeRobot - Error Fetching Service Status.");
     })
 
-    setInterval(UptimeRobot, 180000);
+    setInterval(UptimeRobot, 60000);
 }
-setInterval(UptimeRobot, 180000);
+setInterval(UptimeRobot, 60000);*/
 // End UptimeRobot Init
