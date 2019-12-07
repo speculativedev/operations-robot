@@ -5,7 +5,7 @@ DevOps Bot for Diswcord
 
 * apt-get install redis-server
 
-* npm install axios
+* npm install node-fetch
 * npm install redis
 * npm install discord-akairo
 * npm install discord.js

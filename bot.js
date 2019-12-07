@@ -9,7 +9,6 @@ const uptimerobotkey = fs.readFileSync('/opt/secrets/uptimerobot', 'utf8').trim(
 
 // Var Init
 var default_channel = ''; // leave empty
-const axios = require('axios');
 // End Var Init
 
 // Akairo Client Init
@@ -54,19 +53,29 @@ subscriber.subscribe("operations-robot-msgs");
 
 
 // UptimeRobot Init
-/*function UptimeRobot() {
+function UptimeRobot() {
     if(uptimerobotkey == '') // not initalized
         return;
 
-    axios.post('https://api.uptimerobot.com/v2/getMonitors', {
-        format: 'json',
-        api_key: uptimerobotkey
-    })
-    .then((res) => {
-        //console.log(`statusCode: ${res.statusCode}`)
-        //console.log(res.data.monitors)
-        res.data.monitors.forEach(monitor => {
-            //console.log(monitor.friendly_name+" "+monitor.status);
+
+    const fetch = require("node-fetch");
+    var options = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        body: JSON.stringify({
+            format: 'json',
+            api_key: uptimerobotkey
+        })
+    };
+
+    fetch('https://api.uptimerobot.com/v2/getMonitors', options)
+    .then(res => res.json())
+    .then(json => {
+        json.monitors.forEach(monitor => {
+            //console.log(monitor.friendly_name);
             if(monitor.status>2) {
                 default_channel.send(monitor.friendly_name+" is offline per UptimeRobot.");
             }
@@ -75,9 +84,8 @@ subscriber.subscribe("operations-robot-msgs");
     .catch((error) => {
         console.error(error);
         default_channel.send("UptimeRobot - Error Fetching Service Status.");
-    })
-
-    setInterval(UptimeRobot, 60000);
+    });
+    setTimeout(UptimeRobot, 60000);
 }
-setInterval(UptimeRobot, 60000);*/
+setTimeout(UptimeRobot, 60000);
 // End UptimeRobot Init
