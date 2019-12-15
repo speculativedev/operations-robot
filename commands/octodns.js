@@ -1,9 +1,9 @@
 const { Command } = require('discord-akairo');
 
-class BlogCommand extends Command {
+class DNSCommand extends Command {
     constructor() {
-        super('deploy.kengodwin.com', {
-            aliases: ['deploy.kengodwin.com']
+        super('deploy.dns', {
+            aliases: ['deploy.dns']
         });
     }
 
@@ -12,15 +12,15 @@ class BlogCommand extends Command {
     }
 
     exec(message) {
-        message.reply("Starting deployment of KenGodwin.com");
+        message.reply("Starting deployment of OctoDNS");
         var exec = require('child_process').exec, child;
-        exec('cd /home/kg/kengodwin.com && ./upload.php',
+        exec('cd /home/kg/octodns && ./deploy.sh',
         function (error, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
-            return message.reply('Deployed to KenGodwin.com!');
+            return message.reply('Deployed OctoDNS!');
         });
     }
 }
 
-module.exports = BlogCommand;
+module.exports = DNSCommand;
